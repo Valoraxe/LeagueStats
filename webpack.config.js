@@ -26,7 +26,7 @@ module.exports = {
     },
     devServer: {
         contentBase: path.join(__dirname, 'public'),
-        historyApiFallback: true,
-        publicPath: "/"
+        port: 3000,
+        proxy: { "/backend": { target: 'http://localhost:3001', secure: false }  }
     }
 };

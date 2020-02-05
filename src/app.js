@@ -1,11 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import AppContainer from './components/appContainer';
 
-const APPLICATION = (
-    <div>
-        <h1>Hello Battlefy</h1>
-    </div>
-)
+const APPLICATION = <AppContainer/>
 
 const APPROOT = document.getElementById("app");
 
