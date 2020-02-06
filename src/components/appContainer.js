@@ -1,36 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 
-export class AppContainer extends React.Component {
-    constructor(props) {
-        super(props);
+const AppContainer = () => {
+    const [username, setUsername] = useState('');
+    const [message, setMessage] = useState('');
 
-        this.state = {
-            data: null
-        };
-    }
-    
-    componentDidMount() {
-        this.callBackendAPI().then(res => {
+    const searchMatches = (e) => {
+        e.preventDefault();
+        callBackendAPI().then(res => {
             console.log(res);
-            this.setState({ data: res.express })
+            setMessage('Express Success!');
         })
     }
 
-    async callBackendAPI() {
-        let response = await fetch('/backend');
+    const callBackendAPI = async () => {
+        let response = await fetch(`/backend/user/${username}`);
         let body = await response.json();
 
         return body
     };
     
-    render() {
-        return (
-            <div>
-                <h1>React w/Express</h1>
-                <p>{this.state.data}</p>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <h1>React w/Express</h1>
+            <form onSubmit={searchMatches}>
+                <input value={username} placeholder="Summoner Name" 
+                onChange={(e) => setUsername(e.target.value)}/>
+                <button>Search</button>
+            </form>
+            <p>{message}</p>
+        </div>
+    );
 }
     
 export default AppContainer;
