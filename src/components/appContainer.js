@@ -1,16 +1,20 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { getMatches } from "../redux/actions/actions";
 
 const AppContainer = () => {
     const [username, setUsername] = useState('');
     const [message, setMessage] = useState('');
+    const matches = useSelector(state => state.matches);
+    const dispatch = useDispatch();
 
     const searchMatches = (e) => {
         e.preventDefault();
         callBackendAPI().then(res => {
-            console.log(res);
+            dispatch(getMatches(res));
             setMessage('Express Success!');
         })
-    }
+    };
 
     const callBackendAPI = async () => {
         let response = await fetch(`/backend/user/${username}`);
@@ -31,5 +35,5 @@ const AppContainer = () => {
         </div>
     );
 }
-    
-export default AppContainer;
+
+export default AppContainer
