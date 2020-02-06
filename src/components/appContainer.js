@@ -1,18 +1,27 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { getMatches } from "../redux/actions/actions";
+import { useDispatch } from 'react-redux';
+import { getMatches, getChampions } from "../redux/actions/actions";
+import Match from './match';
+import { data } from '../../public/riot/10.2.1/data/en_GB/champion.json';
 
 const AppContainer = () => {
     const [username, setUsername] = useState('');
-    const [message, setMessage] = useState('');
-    const matches = useSelector(state => state.matches);
+    const [matches, setMatches] = useState([]);
     const dispatch = useDispatch();
+
+    const myData = data;
+    const champs = Object.keys(myData).map(item => {
+        return (
+             myData[item]
+        )
+    });
+    dispatch(getChampions(champs));
 
     const searchMatches = (e) => {
         e.preventDefault();
         callBackendAPI().then(res => {
             dispatch(getMatches(res));
-            setMessage('Express Success!');
+            setMatches(res);
         })
     };
 
@@ -27,11 +36,13 @@ const AppContainer = () => {
         <div>
             <h1>React w/Express</h1>
             <form onSubmit={searchMatches}>
-                <input value={username} placeholder="Summoner Name" 
-                onChange={(e) => setUsername(e.target.value)}/>
+                <input value={username} placeholder="Summoner Name" onChange={(e) => setUsername(e.target.value)}/>
                 <button>Search</button>
             </form>
-            <p>{message}</p>
+            
+            {matches.map(match => (
+                <Match key={match.gameId} match={match}/>
+            ))}
         </div>
     );
 }
