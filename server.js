@@ -17,6 +17,13 @@ app.get('/backend/user/:username', (req, res) => {
     })
 });
 
+app.get('/backend/match/:match', (req, res) => {
+    let matchId = req.params.match;
+    getMatch(matchId).then(data => {
+        res.send(data);
+    })
+});
+
 async function getSummoner(name) {
     let summonerData;
     try {
@@ -32,8 +39,23 @@ async function getSummoner(name) {
 async function getMatches(id) {
     let matchData;
     try {
-        await new LeagueJS(RiotAPI).Match.gettingListByAccount(id).then(data => {
-            matchData = data.matches
+        await new LeagueJS(RiotAPI).Match.gettingListByAccount(id, options={endIndex: 1}).then(data => {
+            matchData = {
+                matches: data.matches,
+                userId: id
+            }
+        });
+    } catch(e) {
+        matchData = e.statusCode;
+    }
+    return matchData
+}
+
+async function getMatch(id) {
+    let matchData;
+    try {
+        await new LeagueJS(RiotAPI).Match.gettingById(id).then(data => {
+            matchData = data
         });
     } catch(e) {
         matchData = e.statusCode;

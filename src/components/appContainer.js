@@ -1,31 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
-import { getMatches, getChampions } from "../redux/actions/actions";
+import { getChampions, getRunes, getSummoners } from "../redux/actions/actions";
 import Match from './match';
-import { data } from '../../public/riot/10.2.1/data/en_GB/champion.json';
+import { data as championData } from '../../public/riot/10.2.1/data/en_GB/champion.json';
+import { data as summonerData } from '../../public/riot/10.2.1/data/en_GB/summoner.json';
+import * as runesData from '../../public/riot/10.2.1/data/en_GB/runesReforged.json'
 
 const AppContainer = () => {
     const [username, setUsername] = useState('');
+    const [summoner, setSummoner] = useState('');
     const [matches, setMatches] = useState([]);
     const dispatch = useDispatch();
 
-    const myData = data;
-    const champs = Object.keys(myData).map(item => {
-        return (
-             myData[item]
-        )
-    });
-    dispatch(getChampions(champs));
+    useEffect(() => {
+        const champData = championData;
+        const champs = Object.keys(champData).map(item => {
+            return (
+                champData[item]
+            )
+        });
+
+        const summonData = summonerData;
+        const summoners = Object.keys(summonData).map(item => {
+            return (
+                summonData[item]
+            )
+        });
+
+        const runeData = runesData;
+        const runes = Object.keys(runeData).map(item => {
+            return (
+                runeData[item]
+            )
+        });
+        
+        dispatch(getChampions(champs));
+        dispatch(getRunes(runes));
+        dispatch(getSummoners(summoners));
+    }, [])
 
     const searchMatches = (e) => {
         e.preventDefault();
-        callBackendAPI().then(res => {
-            dispatch(getMatches(res));
-            setMatches(res);
+        callRiotAPI().then(res => {
+            setMatches(res.matches);
+            setSummoner(res.userId);
         })
     };
 
-    const callBackendAPI = async () => {
+    const callRiotAPI = async () => {
         let response = await fetch(`/backend/user/${username}`);
         let body = await response.json();
 
@@ -41,7 +63,7 @@ const AppContainer = () => {
             </form>
             
             {matches.map(match => (
-                <Match key={match.gameId} match={match}/>
+                <Match key={match.gameId} match={match} summoner={summoner}/>
             ))}
         </div>
     );

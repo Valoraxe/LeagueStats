@@ -1,7 +1,7 @@
 export default (state = [], action) => {
     switch (action.type) {
-        case "GET_MATCHES":
-            return action.matches;
+        case "GET_RUNES":
+            return action.runes;
         default:
             return state;
     }
