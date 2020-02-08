@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
-import { getChampions, getRunes, getSummoners } from "../redux/actions/actions";
+import { getChampions, getRunes, getPlayer, getSummoners } from "../redux/actions/actions";
 import Match from './match';
 import { data as championData } from '../../public/riot/10.2.1/data/en_GB/champion.json';
 import { data as summonerData } from '../../public/riot/10.2.1/data/en_GB/summoner.json';
@@ -8,7 +8,6 @@ import * as runesData from '../../public/riot/10.2.1/data/en_GB/runesReforged.js
 
 const AppContainer = () => {
     const [username, setUsername] = useState('');
-    const [summoner, setSummoner] = useState('');
     const [matches, setMatches] = useState([]);
     const dispatch = useDispatch();
 
@@ -42,8 +41,8 @@ const AppContainer = () => {
     const searchMatches = (e) => {
         e.preventDefault();
         callRiotAPI().then(res => {
+            dispatch(getPlayer(res.userId));
             setMatches(res.matches);
-            setSummoner(res.userId);
         })
     };
 
@@ -63,7 +62,7 @@ const AppContainer = () => {
             </form>
             <div className="games-container">
                 {matches.map(match => (
-                    <Match key={match.gameId} match={match} summoner={summoner}/>
+                    <Match key={match.gameId} match={match}/>
                 ))}
             </div>
         </div>

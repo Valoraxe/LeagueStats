@@ -13,3 +13,8 @@ export const getSummoners = (summoners) => ({
     type: "GET_SUMMONERS",
     summoners
 });
+
+export const getPlayer = (id) => ({
+    type: "GET_PLAYER",
+    id
+})

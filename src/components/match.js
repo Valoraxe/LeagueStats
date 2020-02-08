@@ -1,35 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 
-const Match = ({ match, summoner }) => {
+const Match = ({ match }) => {
     const [game, setGame] = useState('');
     const [player, setPlayer] = useState('');
     const champions = useSelector(state => state.champions);
+    const playerId = useSelector(state => state.player);
     const runes = useSelector(state => state.runes);
     const summoners = useSelector(state => state.summoners);
 
     useEffect(() => {
-        const abortController = new AbortController();
-        if(summoner.length > 0) {
-            callRiotAPI().then(res => {
-                let myData = res;
+        callRiotAPI().then(res => {
+            let myData = res;
                 
-                let myPlayer = myData.participantIdentities.filter(data => (
-                    data.player.accountId === summoner
-                ));
+            let chosenPlayer = myData.participantIdentities.filter(data => (
+                data.player.accountId === playerId
+            ));
     
-                let playerData = myData.participants.filter(data => (
-                    data.participantId === myPlayer[0].participantId
-                ));
+            let playerData = myData.participants.filter(data => (
+                data.participantId === chosenPlayer[0].participantId
+            ));
                 
-                setGame(res);
-                setPlayer(playerData[0]);
-            })
+            setGame(res);
+            setPlayer(playerData[0]);
+        })
+    }, [])
 
-            return abortController.abort();
-        }
-    }, [summoner])
-    
     const getChampImage = () => {
         const champion = champions.filter(champ => parseInt(champ.key) === match.champion);
         const image = champion[0].image.full;
