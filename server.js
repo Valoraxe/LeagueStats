@@ -39,7 +39,7 @@ async function getSummoner(name) {
 async function getMatches(id) {
     let matchData;
     try {
-        await new LeagueJS(RiotAPI).Match.gettingListByAccount(id, options={endIndex: 1}).then(data => {
+        await new LeagueJS(RiotAPI).Match.gettingListByAccount(id, options={endIndex: 20}).then(data => {
             matchData = {
                 matches: data.matches,
                 userId: id

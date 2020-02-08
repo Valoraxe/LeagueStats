@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import AppContainer from './components/appContainer';
 import store from "./redux/store";
+import './styles/styles.scss';
 
 const APPLICATION = (
     <Provider store={store}>

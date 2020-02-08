@@ -1,0 +1,26 @@
+.app-container {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.games-container {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.game-container {
+    display: table;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: $game-font;
+}
+
+.win {
+    background-color: $win-background;
+}
+
+.lose {
+    background-color: $lose-background;
+}

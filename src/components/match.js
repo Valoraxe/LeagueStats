@@ -9,6 +9,7 @@ const Match = ({ match, summoner }) => {
     const summoners = useSelector(state => state.summoners);
 
     useEffect(() => {
+        const abortController = new AbortController();
         if(summoner.length > 0) {
             callRiotAPI().then(res => {
                 let myData = res;
@@ -24,9 +25,11 @@ const Match = ({ match, summoner }) => {
                 setGame(res);
                 setPlayer(playerData[0]);
             })
+
+            return abortController.abort();
         }
     }, [summoner])
-
+    
     const getChampImage = () => {
         const champion = champions.filter(champ => parseInt(champ.key) === match.champion);
         const image = champion[0].image.full;
@@ -85,9 +88,17 @@ const Match = ({ match, summoner }) => {
         }
         
         if (itemValue !== 0) {
-            itemImage = `/riot/10.2.1/img/item/${itemValue}.png`;
+            itemImage = (
+                <div className="item-cell"> 
+                    <img src={`/riot/10.2.1/img/item/${itemValue}.png`} className="item-image"/>
+                </div>
+            );
         } else {
-            //put empty image here
+            itemImage = (
+                <div className="item-cell"> 
+                    <img src="no-image.png" className="no-item"/>
+                </div>
+            )
         }
         return itemImage;
     }
@@ -95,7 +106,11 @@ const Match = ({ match, summoner }) => {
     const getKDA = () => {
         let { kills, deaths, assists } = player.stats;
         if (deaths < 1) {
-            return `Perfect`;
+            if (kills > 0 || assists > 0) {
+                return `Perfect`;
+            } else {
+                return `0.00 : 1`;
+            }
         } else {
             let KDA = (kills + assists) / deaths;
             return `${KDA.toFixed(2)} : 1`;
@@ -145,29 +160,69 @@ const Match = ({ match, summoner }) => {
     };
 
     return (
-        <div>
-            {player && <span>
-                <p>
-                    <b>{player.stats.win ? "Win" : "Loss"}</b><br/>
-                    {getMatchTime()}<br/>
-                    {getCreepScore()}
-                </p>
-                <img src={getChampImage()}/>
-                <p>
-                    {getChampName()}<br/>
-                    {`Level: ${player.stats.champLevel}`}
-                </p>
-                <img src={getSummonerImage(1)}/><img src={getSummonerImage(2)}/>
-                <img src={getPrimaryRune()}/><img src={getSecondaryRune()}/>
-                <p>
-                    {`${player.stats.kills} / ${player.stats.deaths} / ${player.stats.assists}`}<br/>
-                    {`${getKDA()} KDA`}
-                </p>
-                <img src={getItemImage(1)}/><img src={getItemImage(2)}/><img src={getItemImage(3)}/>
-                <img src={getItemImage(4)}/><img src={getItemImage(5)}/><img src={getItemImage(6)}/>
-                <img src={getItemImage(7)}/>
-            </span>}
-        </div>
+        <>
+            {player && <div className={player.stats.win ? "game-container win" : "game-container lose"}>
+                <div className="game-cell">
+                    <div className="match-cell">
+                        <div className="match-result">
+                            {player.stats.win ? "Victory" : "Defeat"}
+                        </div>
+                        <div className="match-margin">
+                            {getMatchTime()}
+                        </div>
+                    </div>
+                </div>
+                <div className="game-cell">
+                    <div className="champion-cell">
+                        <img src={getChampImage()} className="champion-image"/>
+                        <div className="summoners-runes-cell">
+                            <img src={getSummonerImage(1)} className="item-image summoner-margin"/>
+                            <img src={getSummonerImage(2)} className="item-image summoner-margin"/>
+                        </div>
+                        <div className="summoners-runes-cell">
+                            <img src={getPrimaryRune()} className="item-image summoner-margin with-background"/>
+                            <img src={getSecondaryRune()} className="item-image summoner-margin"/>
+                        </div>
+                        <div className="champion-margin">
+                            {getChampName()}
+                        </div>
+                    </div>
+                </div>
+                <div className="game-cell">
+                    <div className="kda-cell">
+                        <div className="kda-title">
+                            {`${player.stats.kills} / ${player.stats.deaths} / ${player.stats.assists}`}
+                        </div>
+                        <div className="kda-margin">
+                            {`${getKDA()} KDA`}
+                        </div>
+                    </div>
+                </div>
+                <div className="game-cell">
+                    <div className="stats-cell">
+                        <div>
+                            {`Level: ${player.stats.champLevel}`}
+                        </div>
+                        <div className="creeps-margin">
+                            {getCreepScore()}
+                        </div>
+                    </div>
+                </div>
+                <div className="game-cell">
+                    <div className="items-cell">
+                        {getItemImage(1)}
+                        {getItemImage(2)}
+                        {getItemImage(3)}
+                        {getItemImage(7)}
+                        <span className="bottom-items-cell">
+                            {getItemImage(4)}
+                            {getItemImage(5)}
+                            {getItemImage(6)}
+                        </span>
+                    </div>
+                </div>
+            </div>}
+        </>
     );
 }
 

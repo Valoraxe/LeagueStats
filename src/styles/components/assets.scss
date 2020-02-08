@@ -1,0 +1,29 @@
+.champion-image {
+    height: 60px;
+    width: 60px;
+    margin-bottom: 3px;
+}
+
+.item-image {
+    height: 30px;
+    width: 30px;
+}
+
+.no-item {
+    height: 30px;
+    width: 30px;
+    background-color: $black;
+    opacity: 0.2
+}
+
+.kda-title {
+    font-size: $title-font;
+}
+
+.match-result {
+    font-weight: $bold-font;
+}
+
+.with-background {
+    background-color: $black;
+}

@@ -55,16 +55,17 @@ const AppContainer = () => {
     };
     
     return (
-        <div>
-            <h1>React w/Express</h1>
+        <div className="app-container">
+            <h1>League Stats</h1>
             <form onSubmit={searchMatches}>
                 <input value={username} placeholder="Summoner Name" onChange={(e) => setUsername(e.target.value)}/>
                 <button>Search</button>
             </form>
-            
-            {matches.map(match => (
-                <Match key={match.gameId} match={match} summoner={summoner}/>
-            ))}
+            <div className="games-container">
+                {matches.map(match => (
+                    <Match key={match.gameId} match={match} summoner={summoner}/>
+                ))}
+            </div>
         </div>
     );
 }

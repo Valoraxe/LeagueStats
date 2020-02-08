@@ -1,0 +1,42 @@
+.game-cell {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.champion-cell {
+    margin-top: 15px;
+    width: 130px;
+}
+
+.match-cell {
+    width: 70px;
+}
+
+.stats-cell {
+    width: 75px;
+}
+
+.kda-cell {
+    font-weight: $bold-font;
+    width: 140px;
+}
+
+.items-cell {
+    width: 140px;
+}
+
+.item-cell {
+    display: inline-block;
+    margin-right: 3px;
+}
+
+.bottom-items-cell {
+    margin-right: 33px;
+}
+
+.summoners-runes-cell {
+    display: inline-grid;
+    vertical-align: text-bottom;
+    margin-left: 4px;
+}
