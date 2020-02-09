@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { getChampions, getMatches, getPlayer, getRunes, getSummoners } from "../redux/actions/actions";
 import Match from './match';
-import { data as championData } from '../../public/riot/10.2.1/data/en_GB/champion.json';
-import { data as summonerData } from '../../public/riot/10.2.1/data/en_GB/summoner.json';
-import * as runesData from '../../public/riot/10.2.1/data/en_GB/runesReforged.json'
+import { data as championData } from '../../public/riot/10.3.1/data/en_GB/champion.json';
+import { data as summonerData } from '../../public/riot/10.3.1/data/en_GB/summoner.json';
+import * as runesData from '../../public/riot/10.3.1/data/en_GB/runesReforged.json'
 
 const AppContainer = () => {
     const [username, setUsername] = useState('');

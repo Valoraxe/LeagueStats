@@ -10,7 +10,7 @@ const ChampionInfo = ({ match, player }) => {
         const champion = champions.filter(champ => parseInt(champ.key) === match.champion);
         const image = champion[0].image.full;
 
-        return `/riot/10.2.1/img/champion/${image}`;
+        return `/riot/10.3.1/img/champion/${image}`;
     }
 
     const getChampName = () => {
@@ -61,7 +61,7 @@ const ChampionInfo = ({ match, player }) => {
         const spell = summoners.filter(data => spellValue.toString() === data.key);
         const image = spell[0].image.full
         
-        return `/riot/10.2.1/img/spell/${image}`;
+        return `/riot/10.3.1/img/spell/${image}`;
     }
 
     return (

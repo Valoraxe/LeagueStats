@@ -32,7 +32,7 @@ const ItemList = ({ player }) => {
         if (itemValue !== 0) {
             itemImage = (
                 <div className="item-cell"> 
-                    <img src={`/riot/10.2.1/img/item/${itemValue}.png`} className="item-image"/>
+                    <img src={`/riot/10.3.1/img/item/${itemValue}.png`} className="item-image"/>
                 </div>
             );
         } else {
