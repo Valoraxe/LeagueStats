@@ -8,6 +8,9 @@ import * as runesData from '../../public/riot/10.2.1/data/en_GB/runesReforged.js
 
 const AppContainer = () => {
     const [username, setUsername] = useState('');
+    const [badRequest, setBadRequest] = useState(false);
+    const [badSearch, setBadSearch] = useState(false);
+    const [noGames, setNoGames] = useState(false); 
     const matches = useSelector(state => state.matches);
     const dispatch = useDispatch();
 
@@ -41,8 +44,22 @@ const AppContainer = () => {
     const searchMatches = (e) => {
         e.preventDefault();
         callRiotAPI().then(res => {
-            dispatch(getPlayer(res.userId));
-            dispatch(getMatches(res.matches));
+            setBadRequest(false);
+            setBadSearch(false);
+            setNoGames(false);
+            if (res.userAvailable) {
+                if (res.matchesAvailable) {
+                    dispatch(getPlayer(res.userId));
+                    dispatch(getMatches(res.matches));
+                } else {
+                    setNoGames(true);
+                }
+            } else {
+                setBadSearch(true);
+            }
+        }).catch(err => {
+            console.log(err);
+            setBadRequest(true);
         })
     };
 
@@ -61,6 +78,9 @@ const AppContainer = () => {
                 <button>Search</button>
             </form>
             <div className="games-container">
+                {badRequest && <span className="error">Request Failed! Please try again.</span>}
+                {badSearch && <span className="error">Invalid Summoner! Please try again.</span>}
+                {noGames && <span className="error">This Summoner hasn't played in ages!</span>}
                 {matches.map(match => (
                     <Match key={match.gameId} match={match}/>
                 ))}

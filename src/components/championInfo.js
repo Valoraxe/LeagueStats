@@ -23,20 +23,28 @@ const ChampionInfo = ({ match, player }) => {
     const getPrimaryRune = () => {
         let myRune = player.stats.perk0;
         let perk = player.stats.perkPrimaryStyle;
-        let runeType = runes[0].filter(rune => perk === rune.id);
-        let primaryRunes = runeType[0].slots[0].runes;
-        let chosenRune = primaryRunes.filter(rune => myRune === rune.id);
-        let image = chosenRune[0].icon;
+        if (myRune !== undefined && perk !== undefined) {
+            let runeType = runes[0].filter(rune => perk === rune.id);
+            let primaryRunes = runeType[0].slots[0].runes;
+            let chosenRune = primaryRunes.filter(rune => myRune === rune.id);
+            let image = chosenRune[0].icon;
 
-        return `/riot/img/${image}`;
+            return `/riot/img/${image}`;
+        } else {
+            return `/no-image.png`;
+        }
     }
 
     const getSecondaryRune = () => {
         let perk = player.stats.perkSubStyle;
-        let runeType = runes[0].filter(rune => perk === rune.id);
-        let image = runeType[0].icon;
+        if (perk !== undefined) {
+            let runeType = runes[0].filter(rune => perk === rune.id);
+            let image = runeType[0].icon;
 
-        return `/riot/img/${image}`;
+            return `/riot/img/${image}`;
+        } else {
+            return `/no-image.png`;
+        }
     }
 
     const getSummonerImage = (spellSlot) => {

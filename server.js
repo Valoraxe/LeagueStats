@@ -11,9 +11,19 @@ app.listen(port, () => {
 app.get('/backend/user/:username', (req, res) => {
     let username = req.params.username;
     getSummoner(username).then(data => {
-        getMatches(data.accountId).then(data => {
-            res.send(data);
-        })
+        if(data !== undefined) {
+            getMatches(data.accountId).then(data => {
+                if (data !== undefined) {
+                    res.send(data);
+                } else {
+                    res.send({userAvailable: true, matchesAvailable: false});
+                }
+            });
+        } else {
+            res.send({userAvailable: false});
+        }
+    }).catch(err => {
+        console.log("error", err);
     })
 });
 
@@ -21,6 +31,8 @@ app.get('/backend/match/:match', (req, res) => {
     let matchId = req.params.match;
     getMatch(matchId).then(data => {
         res.send(data);
+    }).catch(err => {
+        console.log("error", err);
     })
 });
 
@@ -42,6 +54,8 @@ async function getMatches(id) {
         await new LeagueJS(RiotAPI).Match.gettingListByAccount(id, options={endIndex: 20}).then(data => {
             matchData = {
                 matches: data.matches,
+                userAvailable: true,
+                matchesAvailable: true,
                 userId: id
             }
         });

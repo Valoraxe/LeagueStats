@@ -24,3 +24,9 @@
 .lose {
     background-color: $lose-background;
 }
+
+.error {
+    font-weight: $bold-font;
+    font-size: $title-font;
+    color: $red;
+}
