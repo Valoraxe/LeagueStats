@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux';
-import { getChampions, getRunes, getPlayer, getSummoners } from "../redux/actions/actions";
+import { useSelector, useDispatch } from 'react-redux';
+import { getChampions, getMatches, getPlayer, getRunes, getSummoners } from "../redux/actions/actions";
 import Match from './match';
 import { data as championData } from '../../public/riot/10.2.1/data/en_GB/champion.json';
 import { data as summonerData } from '../../public/riot/10.2.1/data/en_GB/summoner.json';
@@ -8,7 +8,7 @@ import * as runesData from '../../public/riot/10.2.1/data/en_GB/runesReforged.js
 
 const AppContainer = () => {
     const [username, setUsername] = useState('');
-    const [matches, setMatches] = useState([]);
+    const matches = useSelector(state => state.matches);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -42,7 +42,7 @@ const AppContainer = () => {
         e.preventDefault();
         callRiotAPI().then(res => {
             dispatch(getPlayer(res.userId));
-            setMatches(res.matches);
+            dispatch(getMatches(res.matches));
         })
     };
 
