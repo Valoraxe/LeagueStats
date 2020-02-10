@@ -10,6 +10,7 @@
 }
 
 .game-container {
+    box-shadow: 5px 5px 5px $black;
     display: table;
     text-align: center;
     padding: 10px;
@@ -25,8 +26,17 @@
     background-color: $lose-background;
 }
 
-.error {
-    font-weight: $bold-font;
+.title {
     font-size: $title-font;
-    color: $red;
+    color: $gold;
+    font-weight: $bold-font;
+    text-shadow: 2px 2px 5px $black; 
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+.error {
+    text-shadow: 2px 2px 5px $black;
+    font-weight: $bold-font;
+    font-size: $header-font;
+    color: $gold;
 }

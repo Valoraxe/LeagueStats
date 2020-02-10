@@ -4,7 +4,7 @@ import { getChampions, getMatches, getPlayer, getRunes, getSummoners } from "../
 import Match from './match';
 import { data as championData } from '../../public/riot/10.3.1/data/en_GB/champion.json';
 import { data as summonerData } from '../../public/riot/10.3.1/data/en_GB/summoner.json';
-import * as runesData from '../../public/riot/10.3.1/data/en_GB/runesReforged.json'
+import * as runesData from '../../public/riot/10.3.1/data/en_GB/runesReforged.json';
 
 const AppContainer = () => {
     const [username, setUsername] = useState('');
@@ -53,13 +53,16 @@ const AppContainer = () => {
                     dispatch(getMatches(res.matches));
                 } else {
                     setNoGames(true);
+                    dispatch(getMatches([]));
                 }
             } else {
                 setBadSearch(true);
+                dispatch(getMatches([]));
             }
         }).catch(err => {
             console.log(err);
             setBadRequest(true);
+            dispatch(getMatches([]));
         })
     };
 
@@ -72,7 +75,7 @@ const AppContainer = () => {
     
     return (
         <div className="app-container">
-            <h1>League Stats</h1>
+            <span className="title">LEAGUE STATS</span>
             <form onSubmit={searchMatches}>
                 <input value={username} placeholder="Summoner Name" onChange={(e) => setUsername(e.target.value)}/>
                 <button>Search</button>
