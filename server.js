@@ -2,7 +2,7 @@ const express = require('express');
 const LeagueJS = require('leaguejs');
 const app = express();
 const port = 3001;
-const RiotAPI = 'INSERT RIOT API KEY HERE';
+const RiotAPI = 'RGAPI-f4a037e9-687b-4d45-9592-f3c0b5963cf5';
 
 app.listen(port, () => {
     console.log(`Listening to Port ${port}`)
